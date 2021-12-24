@@ -14,20 +14,14 @@
  * limitations under the License.
  */
 
-package org.gypsophila.easyconfig.server;
-
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+package org.gypsophila.easyconfig.common.exception;
 
 /**
  * @author lixiaoshuang
  */
-@RestController
-@RequestMapping(path = "test")
-public class TestController {
+public class EasyConfigException extends Exception {
     
-    @RequestMapping(path = "ok")
-    public String ok() {
-        return "ok";
+    public EasyConfigException(String message) {
+        super(message);
     }
 }

@@ -14,17 +14,23 @@
  * limitations under the License.
  */
 
-package org.gypsophila.easyconfig.server;
+package org.gypsophila.easyconfig.server.model;
+
+import org.gypsophila.easyconfig.common.model.ConfigInfo;
+import org.springframework.jdbc.core.RowMapper;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * @author lixiaoshuang
  */
-public interface StorageService {
+public class ConfigInfoRowMapper implements RowMapper<ConfigInfo> {
     
-    /**
-     * 存储服务执行sql
-     *
-     * @param sql 要执行的sql
-     */
-    void executeSql(String sql);
+    @Override
+    public ConfigInfo mapRow(ResultSet rs, int rowNum) throws SQLException {
+        
+        return new ConfigInfo(rs.getString("namespace_id"), rs.getString("config_key"), rs.getString("configValue"),
+                rs.getString("config_type"));
+    }
 }

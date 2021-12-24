@@ -14,17 +14,24 @@
  * limitations under the License.
  */
 
-package org.gypsophila.easyconfig.server;
+package org.gypsophila.easyconfig.server.service;
 
 import com.gypsophila.easyconfig.common.grpc.EasyConfigServiceGrpc;
 import com.gypsophila.easyconfig.common.grpc.EasyConfigServiceOuterClass;
 import io.grpc.stub.StreamObserver;
-import org.gypsophila.easyconfig.common.ConfigInfo;
+import org.gypsophila.easyconfig.common.model.ConfigInfo;
+import org.gypsophila.easyconfig.common.exception.EasyConfigException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * @author lixiaoshuang
  */
+@Service
 public class EasyConfigGrpcService extends EasyConfigServiceGrpc.EasyConfigServiceImplBase {
+    
+    @Autowired
+    private MysqlStorageService mysqlStorageService;
     
     @Override
     public void publish(EasyConfigServiceOuterClass.request request,
@@ -35,6 +42,12 @@ public class EasyConfigGrpcService extends EasyConfigServiceGrpc.EasyConfigServi
         String configType = request.getConfigType();
         
         ConfigInfo configInfo = new ConfigInfo(namespace, configKey, configValue, configType);
+        try {
+            int i = mysqlStorageService.saveConfig(configInfo);
+            System.out.println("保存操作结果：" + i);
+        } catch (EasyConfigException e) {
+            e.printStackTrace();
+        }
         
         EasyConfigServiceOuterClass.response response = EasyConfigServiceOuterClass.response.newBuilder()
                 .setConfigKey(configKey).setConfigValue(configValue).build();
@@ -45,12 +58,31 @@ public class EasyConfigGrpcService extends EasyConfigServiceGrpc.EasyConfigServi
     @Override
     public void get(EasyConfigServiceOuterClass.request request,
             StreamObserver<EasyConfigServiceOuterClass.response> responseObserver) {
+        String namespace = request.getNamespace();
+        String configKey = request.getConfigKey();
+        
+        try {
+            ConfigInfo config = mysqlStorageService.getConfig(namespace, configKey);
+            System.out.println("获取信息：" + config.getConfigValue());
+        } catch (EasyConfigException e) {
+            e.printStackTrace();
+        }
+        
         super.get(request, responseObserver);
     }
     
     @Override
     public void delete(EasyConfigServiceOuterClass.request request,
             StreamObserver<EasyConfigServiceOuterClass.response> responseObserver) {
+        String namespace = request.getNamespace();
+        String configKey = request.getConfigKey();
+        
+        try {
+            int result = mysqlStorageService.deleteConfig(namespace, configKey);
+            System.out.println("删除：" + result);
+        } catch (EasyConfigException e) {
+            e.printStackTrace();
+        }
         super.delete(request, responseObserver);
     }
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.gypsophila.easyconfig.common;
+package org.gypsophila.easyconfig.common.model;
 
 /**
  * @author lixiaoshuang
