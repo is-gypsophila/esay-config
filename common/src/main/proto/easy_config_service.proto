@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+option java_package = "com.gypsophila.easyconfig.common.grpc";
+
+
+message request{
+  string namespace = 1;
+  string configKey = 2;
+  string configValue = 3;
+  string configType = 4;
+}
+
+message response{
+  string configKey = 1;
+  string configValue = 2;
+}
+
+
+service EasyConfigService {
+
+  rpc publish (request) returns (response);
+
+  rpc get (request) returns (response);
+
+  rpc delete (request) returns (response);
+
+}

@@ -1,4 +1,4 @@
-package org.gypsophila.easyconfig.easyconfigserver;
+package org.gypsophila.easyconfig.server;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

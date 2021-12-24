@@ -8,10 +8,32 @@
     <artifactId>easy-config</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0-SNAPSHOT</version>
+    
     <modules>
         <module>client</module>
         <module>server</module>
+        <module>common</module>
     </modules>
+    
+    <developers>
+        <developer>
+            <name>lixiaoshuang</name>
+            <email>644968328@qq.com</email>
+        </developer>
+    </developers>
+    
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    
+    <organization>
+        <name>is-gypsophila</name>
+        <url>https://github.com/is-gypsophila</url>
+    </organization>
     
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
