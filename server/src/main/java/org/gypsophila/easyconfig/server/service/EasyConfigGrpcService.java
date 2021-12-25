@@ -60,15 +60,17 @@ public class EasyConfigGrpcService extends EasyConfigServiceGrpc.EasyConfigServi
             StreamObserver<EasyConfigServiceOuterClass.response> responseObserver) {
         String namespace = request.getNamespace();
         String configKey = request.getConfigKey();
-        
+        ConfigInfo config = null;
         try {
-            ConfigInfo config = mysqlStorageService.getConfig(namespace, configKey);
+            config = mysqlStorageService.getConfig(namespace, configKey);
             System.out.println("获取信息：" + config.getConfigValue());
         } catch (EasyConfigException e) {
             e.printStackTrace();
         }
-        
-        super.get(request, responseObserver);
+        EasyConfigServiceOuterClass.response response = EasyConfigServiceOuterClass.response.newBuilder()
+                .setConfigKey(configKey).setConfigValue(config.getConfigValue()).build();
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
     }
     
     @Override
@@ -83,6 +85,9 @@ public class EasyConfigGrpcService extends EasyConfigServiceGrpc.EasyConfigServi
         } catch (EasyConfigException e) {
             e.printStackTrace();
         }
-        super.delete(request, responseObserver);
+        EasyConfigServiceOuterClass.response response = EasyConfigServiceOuterClass.response.newBuilder()
+                .setConfigKey(configKey).setConfigValue("").build();
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
     }
 }
